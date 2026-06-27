@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Claude Code Usage — multi-business</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>// Auto-generated — do not commit if repo is public. Gitignored.
+window.DASHBOARD_CONFIG = {
+  supabaseUrl: 'https://uhybwsvxvpootnmegwey.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoeWJ3c3Z4dnBvb3RubWVnd2V5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1ODA2NTcsImV4cCI6MjA5NzE1NjY1N30.4vpYNOK6GMqvviiNuIjjcScI-MKPIoUirQTQZApYC3Q'
+};
+</script>
+<style>
+  :root{--bg:#0a0e14;--card:#121820;--card2:#1a2230;--bd:#2a3548;--tx:#e8edf5;--mut:#9ba8bc;--grn:#34d399;--amb:#fbbf24;--red:#f87171;--ac:#2dd4bf;--ac2:#60a5fa;}
+  *{box-sizing:border-box}body{margin:0 auto;max-width:1200px;background:var(--bg);color:var(--tx);font:14px/1.45 "DM Sans",system-ui,Segoe UI,Roboto,sans-serif;padding:14px;overflow-x:hidden}
+  h1{font-size:1.25rem;margin:0;font-weight:700;letter-spacing:-.02em}.mut{color:var(--mut)}.sm{font-size:.8rem}.xs{font-size:.72rem}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.between{justify-content:space-between}
+  .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-top:12px}
+  .grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}@media(max-width:760px){.g2{grid-template-columns:1fr}}
+  .title{font-weight:600;margin:18px 0 6px;font-size:.95rem}
+  .hero{background:linear-gradient(180deg,#10202b,#121820);border:1px solid #234}.hero.tok{background:linear-gradient(180deg,#1a1430,#121820);border:1px solid #342}.hero.api{background:linear-gradient(180deg,#0e2a22,#121820);border:1px solid #1f4d3f}
+  .kpi{font-size:1.7rem;font-weight:700}.pill{padding:3px 9px;border-radius:999px;font-size:.72rem;border:1px solid var(--bd);background:var(--card2)}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px}.ok{background:var(--grn)}.warn{background:var(--amb)}.bad{background:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:.84rem}th,td{text-align:right;padding:7px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}th:first-child,td:first-child{text-align:left}th{color:var(--mut);font-weight:600}.tw{overflow-x:auto}
+  canvas{max-height:240px}#hr-chart{max-height:300px}
+  button{background:var(--card2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:7px 12px;cursor:pointer;font:inherit;font-size:.82rem}button:hover{border-color:var(--ac)}button.pri{background:var(--ac);color:#06241f;border-color:var(--ac);font-weight:600}
+  .tabs button.active{background:var(--card2);border-color:var(--ac2);color:var(--ac)}
+  .ms{position:relative}.ms>button{min-width:120px;text-align:left;display:flex;justify-content:space-between;gap:8px}
+  .ms .panel{position:absolute;z-index:40;top:100%;left:0;margin-top:4px;background:var(--card2);border:1px solid var(--bd);border-radius:8px;padding:6px;min-width:220px;max-height:260px;overflow:auto;display:none;box-shadow:0 8px 24px #0007}.ms .panel.open{display:block}.ms .panel label{display:flex;gap:8px;align-items:center;padding:5px 6px;border-radius:6px;cursor:pointer;font-size:.8rem}.ms .panel label:hover{background:var(--card)}
+  .toggle{display:flex;border:1px solid var(--bd);border-radius:8px;overflow:hidden}.toggle button{border:0;border-radius:0}.toggle button.sel{background:var(--ac);color:#06241f;font-weight:600}
+  .chk{display:flex;gap:6px;align-items:center;border:1px solid var(--bd);border-radius:8px;padding:6px 10px;background:var(--card2);font-size:.8rem}
+  .banner{padding:8px 12px;border-radius:8px;font-size:.8rem;margin-top:10px}.banner.warn{background:#3a2e10;color:#f1d18b;border:1px solid #6b520f}.banner.info{background:#10243a;color:#a9d2ff;border:1px solid #234d77}.banner.err{background:#3a1414;color:#f8b4b0;border:1px solid #6b1f1f}
+  .seg{display:flex;height:10px;border-radius:5px;overflow:hidden;background:#222;margin-top:6px}.seg>i{display:block;height:100%}
+  select,input[type=number]{background:var(--card2);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:6px}
+  .insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:10px}
+  .insight{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}
+  .insight .v{font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .insight .l{font-size:.72rem;color:var(--mut);margin-top:2px}
+  .top-row td{font-weight:600;color:var(--ac)}
+  .stale{border-color:var(--red)!important}
+  /* calendar range picker */
+  .cal{min-width:280px;padding:10px}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:6px}
+  .calgrid.dow span{text-align:center;color:var(--mut);font-size:.68rem;padding:2px 0}
+  .cd{position:relative;text-align:center;padding:7px 0;border-radius:7px;border:1px solid transparent;cursor:pointer;font-size:.8rem;background:var(--card)}
+  .cd:hover{border-color:var(--ac)}.cd.empty{background:transparent;cursor:default;border:0}
+  .cd.mon{box-shadow:inset 3px 0 0 var(--ac2)}
+  .cd.renew{font-weight:800;color:var(--amb);box-shadow:inset 0 0 0 2px var(--amb)}
+  .cd.inr{background:#16313a}.cd.end{background:var(--ac);color:#06241f;font-weight:700}
+  .cd.today{outline:1px dashed var(--ac)}
+  .cd .rr,.cd .mm{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%}
+  .cd .rr{background:var(--amb)}.cd .mm{background:var(--ac2)}
+  .calleg{margin-top:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .lg{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:middle;margin-right:3px}.lg.renew{background:var(--amb)}.lg.mon{background:var(--ac2)}
+  @media(max-width:600px){.hero .kpi{font-size:1.35rem}th.hide-sm,td.hide-sm{display:none}}
+</style></head>
+<body>
+<div class="row between">
+  <div><h1>Claude Code Usage</h1><div class="sm mut" id="windows">…</div></div>
+  <div class="row"><div class="toggle"><button id="m-live" class="sel" onclick="setMode('live')">● Live</button><button id="m-man" onclick="setMode('manual')">Manual</button></div><button class="pri" onclick="loadFact()">⟳ Refresh</button></div>
+</div>
+<div id="status" class="banner err" style="display:none"></div>
+<div class="card"><div class="row between"><div class="sm"><span class="mut">Refreshed:</span> <b id="refreshed">—</b> · <span class="mut">mode:</span> <b id="modelbl">live</b> · <span class="mut">rows:</span> <b id="rowct">—</b></div><div class="row" id="laptop-sync"></div></div>
+  <div class="insights" id="insights" aria-label="Billing month insights"></div>
+  <div id="stale-banner" class="banner warn" style="display:none"></div>
+</div>
+
+<div class="card"><div class="row">
+  <label class="chk"><input type="checkbox" id="t-conv" checked onchange="render()"> Convert cache → input/output equivalent <span class="mut xs">(default ON)</span></label>
+  <label class="chk"><input type="checkbox" id="t-peak" checked onchange="render()"> Peak-time weight ×<input id="peak-mult" type="number" step="0.1" value="1.4" style="width:48px" onchange="render()"> on cost <span class="mut xs">(weekday 5–11am PT)</span></label>
+</div><div class="banner warn" id="peak-warn">Note: Peak-time burn was <b>removed for Pro/Max May 6 2026</b> — illustrative for Max. Set multiplier to 1.0 for true allocation.</div></div>
+
+<div class="title">Billing month — cost share per business <span class="mut sm">($)</span></div>
+<div class="card hero"><div class="row between"><div><div class="mut sm">Current billing month total (Max 20x)</div><div class="kpi" id="h1-total">—</div><div class="mut xs" id="h1-sub">—</div></div><div class="mut xs" style="max-width:280px">$ of $<span id="cap-pot">240</span>, stacked by reset-week; peak-weighted if toggled.</div></div>
+  <div class="grid g2" style="margin-top:10px"><div><canvas id="h1-chart"></canvas></div><div class="tw"><table id="h1-table"></table></div></div></div>
+
+<div class="title">Billing month — token usage per business <span class="mut sm">(cache-converted)</span></div>
+<div class="card hero tok"><div class="row between"><div><div class="mut sm">Total tokens (cache→IO equivalent)</div><div class="kpi" id="h2-total">—</div><div class="mut xs" id="h2-sub">—</div></div><div class="mut xs" style="max-width:280px">Cache read×0.1, write×1.25 of input.</div></div>
+  <div class="grid g2" style="margin-top:10px"><div><canvas id="h2-chart"></canvas></div><div class="tw"><table id="h2-table"></table></div></div></div>
+
+<!-- FILTER BAR: tabs + calendar range + dimensions + pre-reset exclusion. Everything BELOW respects these. -->
+<div class="card" id="filterbar"><div class="row between"><div class="tabs row">
+    <button class="active" data-p="month" onclick="setPeriod('month')">Billing month</button>
+    <button data-p="week" onclick="setPeriod('week')">This week</button>
+    <button data-p="all" onclick="setPeriod('all')">All time</button>
+    <div class="ms"><button onclick="calToggle(event)">📅 <b id="cal-lbl">Date range</b> ▾</button><div class="panel cal" id="cal-pop" onclick="event.stopPropagation()"></div></div>
+  </div><div class="row"><span class="sm mut" id="fcount">Showing all</span><button onclick="resetFilters()">Reset</button></div></div>
+  <div class="row" id="filters" style="margin-top:10px"></div>
+  <div class="row" style="margin-top:10px;gap:8px"><span class="sm mut">Exclude pre-reset burn:</span>
+    <div class="toggle" id="excl-toggle"><button class="sel" data-x="0" onclick="setExcl(0)">None</button><button data-x="12" onclick="setExcl(12)">−12h</button><button data-x="24" onclick="setExcl(24)">−24h</button></div>
+    <span class="mut xs">drops the last 12/24h before each weekly reset (Mon 10:30 Tehran) from every chart &amp; table below this bar</span>
+  </div></div>
+
+<div class="title">Weekly token usage per business <span class="mut sm">(reset-weeks across the selected range · respects all filters)</span></div>
+<div class="card"><canvas id="wk-chart"></canvas></div>
+
+<div class="title">Hourly usage by business <span class="mut sm">(Tehran hour of day · drag across the chart to select a range)</span></div>
+<div class="card"><div class="row between">
+    <div class="toggle" id="hr-metric"><button class="sel" data-m="tokens" onclick="setHrMetric('tokens')">Tokens</button><button data-m="api" onclick="setHrMetric('api')">API $</button></div>
+    <button onclick="clearHrSel()">Clear selection</button></div>
+  <canvas id="hr-chart" style="margin-top:8px"></canvas>
+  <div id="hr-sum" class="mut sm" style="margin-top:8px">Drag across the chart to see totals for a selected hour range.</div></div>
+
+<div class="title">5-hour window & peak block <span class="mut sm">(this laptop)</span></div>
+<div class="grid g2"><div class="card"><div class="mut sm">Active 5-hour block</div><div class="kpi" id="b5">—</div><div class="mut xs" id="b5s">—</div><div class="seg"><i id="b5bar" style="background:var(--ac);width:0"></i></div></div><div class="card"><div class="mut sm">Peak block (cap reference)</div><div class="kpi" id="pk">—</div><div class="mut xs">current = <b id="pkp">—</b> of peak</div><div class="seg"><i id="pkbar" style="background:var(--ac2);width:0"></i></div></div></div>
+
+<div class="title">Breakdowns <span class="mut sm">(converted tokens)</span></div>
+<div class="grid g2"><div class="card"><div class="mut sm">By model</div><canvas id="model-chart"></canvas></div><div class="card"><div class="mut sm">By token type</div><canvas id="token-chart"></canvas></div></div>
+
+<div class="title">Trend — $ per business per day</div><div class="card"><canvas id="trend-chart"></canvas></div>
+
+<div class="title">Billing month — API-equivalent $ per business <span class="mut sm">(at API rates · not your $<span id="cap-paid2">240</span> bill)</span></div>
+<div class="card hero api"><div class="row between"><div><div class="mut sm">API-equivalent value</div><div class="kpi" id="h3-total">—</div><div class="mut xs" id="h3-sub">—</div></div><div class="mut xs" style="max-width:280px">On Max you pay $<span id="cap-paid">240</span> flat — the gap is your leverage.</div></div>
+  <div class="grid g2" style="margin-top:10px"><div><canvas id="h3-chart"></canvas></div><div class="tw"><table id="h3-table"></table></div></div></div>
+
+<div class="title">Peak-time usage <span class="mut sm">(weekday 5–11am PT · per business)</span></div>
+<div class="card"><canvas id="peak-chart"></canvas></div>
+
+<div class="title">Per group</div><div class="card tw"><table id="t-group"><caption class="mut sm" style="caption-side:top;text-align:left;padding-bottom:6px">Share of $<span id="cap-pot2">240</span> pot by group (peak-weighted cost basis)</caption><thead><tr><th scope="col">Group</th><th scope="col">Business</th><th scope="col">% of pot</th><th scope="col">Allocated $</th><th scope="col" class="hide-sm">Tokens</th></tr></thead><tbody></tbody></table></div>
+<div class="title">Per project</div><div class="card tw"><table id="t-project"><caption class="mut sm" style="caption-side:top;text-align:left;padding-bottom:6px">Top projects in current filter — highlighted row is largest share</caption><thead><tr><th scope="col">Project</th><th scope="col" class="hide-sm">Group</th><th scope="col">Business</th><th scope="col">% of pot</th><th scope="col">Allocated $</th><th scope="col" class="hide-sm">Tokens</th></tr></thead><tbody></tbody></table></div>
+
+<script>
+const CFG=window.DASHBOARD_CONFIG;
+let DATA=[],LAPTOP_SYNC={},POTS={week:60,month:240},PEAKDEF=1.4,BLOCK={cur:0,peak:1,remain:0};
+let WEEKS=['W1','W2','W3','W4'],period='month',mode='live',timer=null,fails=0;
+let sb=null;
+// time / reset config (Asia/Tehran is fixed UTC+3:30, no DST since 2022)
+const TEH_OFF=210; // minutes
+let MONTH_RESET_DAY=18, WK_DOW=1, WK_H=10, WK_MIN=30;
+// new view/filter state
+let rangeStart=null,rangeEnd=null;       // 'YYYY-MM-DD' Tehran day strings (inclusive)
+let EXCL=0;                              // pre-reset exclusion window in hours (0/12/24)
+let HR_METRIC='tokens',HR_SEL=null,HR_LAST_ROWS=[]; // hourly chart state
+let calY=null,calM=null;                 // calendar displayed month
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const SAMPLE=[
+  {business:'hossein',usage_group:'Sepehr Clinic',project:'Website',model:'claude-opus-4-8',model_label:'Opus 4.8',week:'W1',peak:true,input_tokens:30000,output_tokens:60000,cache_write_tokens:200000,cache_read_tokens:5000000,total_tokens:5290000,model_ratio:{cr:.1,cw:1.25},real_cost_usd:3.2,in_current_month:true,in_current_week:true,laptop_id:'hossein',day:'2026-06-15',ts:'2026-06-15T08:30:00+00:00'},
+  {business:'navid',usage_group:'Acme',project:'Portal',model:'claude-sonnet-4-6',model_label:'Sonnet 4.6',week:'W2',peak:false,input_tokens:20000,output_tokens:40000,cache_write_tokens:100000,cache_read_tokens:2000000,total_tokens:2160000,model_ratio:{cr:.1,cw:1.25},real_cost_usd:1.1,in_current_month:true,in_current_week:false,laptop_id:'navid',day:'2026-06-12',ts:'2026-06-12T18:00:00+00:00'},
+  {business:'hadi',usage_group:'Trading',project:'Bot',model:'claude-haiku-4-5',model_label:'Haiku 4.5',week:'W3',peak:true,input_tokens:10000,output_tokens:20000,cache_write_tokens:50000,cache_read_tokens:900000,total_tokens:980000,model_ratio:{cr:.1,cw:1.25},real_cost_usd:.2,in_current_month:true,in_current_week:false,laptop_id:'hadi',day:'2026-06-10',ts:'2026-06-10T03:00:00+00:00'}];
+const $=id=>document.getElementById(id),usd=n=>'$'+(+n||0).toFixed(2),tok=n=>new Intl.NumberFormat('en',{notation:'compact',maximumFractionDigits:1}).format(+n||0);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad2=n=>String(n).padStart(2,'0');
+let charts={};
+// ---- Tehran time helpers (work in "Tehran space": shift UTC ms by +3:30, read getUTC*) ----
+function parseTs(s){if(s==null)return NaN;if(typeof s==='number')return s;let x=String(s).trim().replace(' ','T');x=x.replace(/([+-]\d{2})$/,'$1:00');let v=Date.parse(x);if(isNaN(v))v=Date.parse(String(s));return v;}
+function tehMs(ts){const v=parseTs(ts);return isNaN(v)?NaN:v+TEH_OFF*60000;}
+function tehToday(){const d=new Date(Date.now()+TEH_OFF*60000);return {y:d.getUTCFullYear(),m:d.getUTCMonth(),day:d.getUTCDate()};}
+function dstr(y,m,day){return y+'-'+pad2(m+1)+'-'+pad2(day);}
+function dayStrOf(r){if(r.day)return String(r.day).slice(0,10);const ms=tehMs(r.ts);if(isNaN(ms))return null;const d=new Date(ms);return dstr(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());}
+function hourOf(r){const ms=tehMs(r.ts);if(!isNaN(ms))return new Date(ms).getUTCHours();return r.hour_teh!=null?+r.hour_teh:0;}
+function weekStartMs(ms){const target=WK_DOW%7;const d=new Date(ms);const back=(d.getUTCDay()-target+7)%7;const s=new Date(ms-back*86400000);s.setUTCHours(WK_H,WK_MIN,0,0);let t=s.getTime();if(t>ms)t-=7*86400000;return t;}
+function weekResetAfter(ms){return weekStartMs(ms)+7*86400000;}
+function fmtWk(ms){const d=new Date(ms);return MONTHS[d.getUTCMonth()]+' '+d.getUTCDate();}
+
+async function loadFact(){
+  if(!CFG){DATA=SAMPLE;LAPTOP_SYNC={hossein:2,navid:18,hadi:190};BLOCK={cur:18e6,peak:42e6,remain:131};$('modelbl').textContent='DEMO (sample)';$('m-live').classList.remove('sel');if(timer){clearInterval(timer);timer=null;}banner('warn','⚠ DEMO DATA (not live) — <code>config.js</code> didn’t load. Open <b>dashboard.html in a real browser</b>. Live also requires <code>009_dashboard_v2.sql</code> applied.');afterLoad();return;}
+  if(!window.supabase){banner('err','supabase-js failed to load (no internet?). Live data unavailable — not showing demo.');return;}
+  if(!sb)sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
+  try{
+    const LIM=200000;
+    const [fact,sync,cfg,blk,pk]=await Promise.all([
+      sb.from('usage_fact').select('business,group_default,project_name,model,model_label,week_ord,is_peak,input_tokens,output_tokens,cache_write_tokens,cache_read_tokens,total_tokens,cr_ratio,cw_ratio,real_cost_usd,pricing_missing,in_current_month,in_current_week,laptop_id,day,ts',{count:'exact'}).limit(LIM),
+      sb.from('usage_laptop_sync').select('*'),sb.from('app_config').select('*'),
+      sb.from('usage_active_block').select('*').limit(1),sb.from('usage_block_peak').select('*').limit(1)]);
+    if(fact.error)throw fact.error;
+    const num=x=>+x||0;
+    DATA=(fact.data||[]).map(r=>({...r,input_tokens:num(r.input_tokens),output_tokens:num(r.output_tokens),cache_write_tokens:num(r.cache_write_tokens),cache_read_tokens:num(r.cache_read_tokens),total_tokens:num(r.total_tokens),real_cost_usd:num(r.real_cost_usd),usage_group:r.group_default,project:r.project_name,week:'W'+(r.week_ord||1),peak:r.is_peak,model_ratio:{cr:num(r.cr_ratio)||.1,cw:num(r.cw_ratio)||1.25}}));
+    (cfg.data||[]).forEach(c=>{
+      if(c.key==='WEEKLY_POT')POTS.week=+c.value;if(c.key==='MONTHLY_POT')POTS.month=+c.value;if(c.key==='PEAK_MULT')PEAKDEF=+c.value;
+      if(c.key==='MONTH_RESET_DAY')MONTH_RESET_DAY=+c.value;
+      if(c.key==='WEEK_RESET_DOW')WK_DOW=+c.value;
+      if(c.key==='WEEK_RESET_TIME'){const parts=String(c.value).split('.');WK_H=+parts[0]||0;WK_MIN=parts[1]?+((parts[1]+'0').slice(0,2)):0;}
+    });
+    $('peak-mult').value=PEAKDEF;
+    LAPTOP_SYNC={};(sync.data||[]).forEach(s=>{const t=new Date(s.last_sync);LAPTOP_SYNC[s.laptop_id]=isNaN(+t)?null:Math.round((Date.now()-t)/60000);});
+    const b=(blk.data||[])[0],p=(pk.data||[])[0];if(b)BLOCK={cur:num(b.total_tokens),peak:(p&&p.peak_tokens)||1,remain:num(b.remaining_minutes)};
+    WEEKS=[...new Set(DATA.filter(r=>r.in_current_month).map(r=>r.week))].sort((x,y)=>(+x.slice(1))-(+y.slice(1)));if(!WEEKS.length)WEEKS=['W1','W2','W3','W4'];
+    fails=0;
+    if(fact.count&&(fact.data||[]).length<fact.count){banner('warn','⚠ Showing '+fact.data.length+' of '+fact.count+' rows (capped at '+LIM+'). Totals understate — pre-aggregate or paginate the view.');}else{$('status').style.display='none';}
+    afterLoad();
+  }catch(e){fails++;banner('err','Live load failed — is <code>009_dashboard_v2.sql</code> applied? '+esc(e.message));if(fails>=5&&timer){clearInterval(timer);timer=null;banner('err','Live load failed 5× — auto-refresh paused. Press Refresh to retry.');}}
+}
+function banner(c,h){const b=$('status');b.className='banner '+c;b.style.display='block';b.innerHTML=h;}
+function afterLoad(){$('refreshed').textContent=new Date().toLocaleTimeString();$('rowct').textContent=DATA.length;laptopSync();renderInsights();render();}
+function renderInsights(){
+  const el=$('insights');if(!DATA.length){el.innerHTML='';return;}
+  const month=DATA.filter(r=>r.in_current_month),api=month.reduce((a,r)=>a+r.real_cost_usd,0),pot=POTS.month;
+  const days=[...new Set(month.map(r=>r.day).filter(Boolean))].sort();
+  const byDay={};days.forEach(d=>{byDay[d]=month.filter(r=>r.day===d).reduce((a,r)=>a+r.real_cost_usd,0);});
+  const burn=days.length?Object.values(byDay).reduce((a,v)=>a+v,0)/days.length:0;
+  const lev=api/pot;
+  const stale=Object.entries(LAPTOP_SYNC).filter(([,m])=>m!=null&&m>1440).map(([l])=>l);
+  const top=month.reduce((best,r)=>r.real_cost_usd>(best?.real_cost_usd||0)?r:best,null);
+  const topLbl=top?(top.project||'—').replace(/^\s+/,'').slice(0,36):'—';
+  el.innerHTML=[
+    {v:usd(api),l:'API-equivalent (month)',t:'At list API rates — not your $'+pot+' bill'},
+    {v:lev.toFixed(1)+'×',l:'Leverage vs $'+pot,t:'API value per dollar of Max subscription'},
+    {v:usd(burn),l:'Avg daily API $',t:days.length+' active days in billing month'},
+    {v:tok(month.reduce((a,r)=>a+convTokens(r),0)),l:'Converted tokens',t:'Cache→IO equivalent (toggle)'},
+    {v:esc(topLbl),l:'Top project (API $)',t:top?usd(top.real_cost_usd):''}
+  ].map(x=>`<div class="insight" title="${esc(x.t)}"><div class="v">${x.v}</div><div class="l">${x.l}</div></div>`).join('');
+  const sb=$('stale-banner');
+  if(stale.length){sb.style.display='block';sb.innerHTML='Stale sync (&gt;24h): <b>'+stale.map(esc).join(', ')+'</b> — run <code>sync-now</code> on those laptops or totals understate.';}
+  else sb.style.display='none';
+}
+const DIMS=[{k:'business',l:'Business',v:r=>r.business,lab:r=>r.business},{k:'group',l:'Group',v:r=>r.usage_group,lab:r=>r.usage_group},{k:'project',l:'Project',v:r=>r.project,lab:r=>r.project},{k:'model',l:'Model',v:r=>r.model,lab:r=>r.model_label},{k:'laptop',l:'Laptop',v:r=>r.laptop_id,lab:r=>r.laptop_id}];
+const sel={};DIMS.forEach(d=>sel[d.k]=new Set());
+const COL=['#2dd4bf','#60a5fa','#a78bfa','#f472b6','#fbbf24','#fb923c','#4ade80','#94a3b8'];
+const convTokens=r=>$('t-conv').checked?(r.input_tokens+r.output_tokens+r.cache_read_tokens*r.model_ratio.cr+r.cache_write_tokens*r.model_ratio.cw):r.total_tokens;
+const peakW=r=>($('t-peak').checked&&r.peak)?(+$('peak-mult').value||1):1;
+const costW=r=>r.real_cost_usd*peakW(r);
+// dimension + period/range filter (the filter bar)
+function filtered(){let rows=DATA.filter(r=>DIMS.every(d=>sel[d.k].size===0||sel[d.k].has(String(d.v(r)))));
+  if(period==='range'&&rangeStart){const hi=rangeEnd||rangeStart;rows=rows.filter(r=>{const d=dayStrOf(r);return d&&d>=rangeStart&&d<=hi;});}
+  else if(period==='week')rows=rows.filter(r=>r.in_current_week);
+  else if(period==='month')rows=rows.filter(r=>r.in_current_month);
+  return rows;}
+// pre-reset exclusion (applies to everything BELOW the filter bar)
+function excl(rows){if(!EXCL)return rows;const w=EXCL*3600000;return rows.filter(r=>{const ms=tehMs(r.ts);if(isNaN(ms))return true;return (weekResetAfter(ms)-ms)>w;});}
+function weeksFromRows(rows){const s=[...new Set(rows.map(r=>r.week))];s.sort((a,b)=>(+a.slice(1))-(+b.slice(1)));return s.length?s:WEEKS;}
+function alloc(rows,keyFn,labFn,basisFn){const tot=rows.reduce((a,r)=>a+basisFn(r),0)||1,pot=period==='week'?POTS.week:POTS.month;const g={};rows.forEach(r=>{const k=keyFn(r);(g[k]??={lab:labFn(r),basis:0,cost:0,tok:0,r0:r});g[k].basis+=basisFn(r);g[k].cost+=r.real_cost_usd;g[k].tok+=convTokens(r);});return Object.values(g).map(o=>({...o,pct:100*o.basis/tot,dollar:pot*o.basis/tot})).sort((a,b)=>b.basis-a.basis);}
+function render(){if(!DATA.length)return;buildFilters();updateWindows();updateCount();$('peak-warn').style.display=(+$('peak-mult').value!==1&&$('t-peak').checked)?'block':'none';
+  ['cap-pot','cap-pot2'].forEach(id=>{const e=$(id);if(e)e.textContent=POTS.month;});['cap-paid','cap-paid2'].forEach(id=>{const e=$(id);if(e)e.textContent=POTS.month;});
+  // above the filter bar (no pre-reset exclusion)
+  const rows=filtered(),biz=[...new Set(rows.map(r=>r.business))],weeks=weeksFromRows(rows);
+  hero('h1',rows,biz,costW,POTS.month,'cost',weeks);hero('h2',rows,biz,convTokens,null,'tokens',weeks);
+  // below the filter bar (with pre-reset exclusion)
+  const rowsB=excl(rows),bizB=[...new Set(rowsB.map(r=>r.business))],weeksB=weeksFromRows(rowsB);
+  weeklyByBiz(rowsB,bizB);
+  hourly(rowsB,bizB);
+  hero('h3',rowsB,bizB,r=>r.real_cost_usd,null,'api',weeksB);
+  fill('t-group',alloc(rowsB,r=>r.usage_group,r=>r.usage_group,costW),o=>[o.lab,o.r0.business,o.pct.toFixed(1)+'%',usd(o.dollar),tok(o.tok)]);
+  fill('t-project',alloc(rowsB,r=>r.project,r=>r.project,costW),o=>[o.lab,o.r0.usage_group,o.r0.business,o.pct.toFixed(1)+'%',usd(o.dollar),tok(o.tok)]);
+  const md=alloc(rowsB,r=>r.model,r=>r.model_label,convTokens);dough('model-chart',md.map(o=>o.lab),md.map(o=>o.tok));
+  const f=$('t-conv').checked,tt=rowsB.reduce((a,r)=>{a.in+=r.input_tokens+(f?r.cache_read_tokens*r.model_ratio.cr+r.cache_write_tokens*r.model_ratio.cw:0);a.out+=r.output_tokens;a.cw+=f?0:r.cache_write_tokens;a.cr+=f?0:r.cache_read_tokens;return a;},{in:0,out:0,cw:0,cr:0});
+  bar('token-chart',f?['Input-equiv','Output']:['Input','Output','Cache write','Cache read'],f?[tt.in,tt.out]:[tt.in,tt.out,tt.cw,tt.cr]);
+  trend(rowsB,bizB);peakChart(rowsB,bizB);draw5h();
+}
+function hero(id,rows,biz,basisFn,pot,kind,weeks){const tot=rows.reduce((a,r)=>a+basisFn(r),0)||1;const wk={};biz.forEach(b=>{wk[b]={t:0};weeks.forEach(w=>wk[b][w]=0);});
+  rows.forEach(r=>{const v=kind==='cost'?pot*basisFn(r)/tot:basisFn(r);if(wk[r.business][r.week]==null)wk[r.business][r.week]=0;wk[r.business][r.week]+=v;wk[r.business].t+=v;});
+  const isD=kind!=='tokens',f=v=>isD?usd(v):tok(v),denom=kind==='cost'?pot:tot;
+  $(id+'-total').textContent=kind==='cost'?usd(pot):f(tot);
+  $(id+'-sub').textContent=kind==='cost'?(tok(rows.reduce((a,r)=>a+r.total_tokens,0))+' raw tokens'):kind==='api'?('notional '+usd(tot)+' vs '+usd(POTS.month)+' paid'):('cache converted · '+tok(tot)+' equiv');
+  const ds=weeks.map((w,i)=>({label:w,data:biz.map(b=>wk[b][w]||0),backgroundColor:COL[i%COL.length]}));
+  mk(id+'-chart','bar',{labels:biz,datasets:ds},{plugins:{legend:{position:'bottom',labels:{color:'#9ba8bc'}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+f(c.raw)}}},scales:{x:{stacked:true,ticks:{color:'#cfe3ff'}},y:{stacked:true,ticks:{color:'#9ba8bc',callback:v=>isD?'$'+v:tok(v)}}}});
+  const valHdr=kind==='cost'?'Month $':kind==='api'?'API $':'Tokens';const thd='<tr><th>Business</th><th>Month %</th><th>'+valHdr+'</th>'+weeks.map(w=>'<th>'+w+'</th>').join('')+'</tr>';const tbb=biz.map(b=>{const o=wk[b],pct=100*o.t/denom;return '<tr><td>'+esc(b)+'</td><td>'+pct.toFixed(1)+'%</td><td>'+f(o.t)+'</td>'+weeks.map(w=>'<td>'+f(o[w]||0)+'</td>').join('')+'</tr>';}).join('');$(id+'-table').innerHTML='<thead>'+thd+'</thead><tbody>'+tbb+'</tbody>';
+}
+// weekly chart: bucket by reset-week (Mon 10:30 Tehran), across the selected range
+function weeklyByBiz(rows,biz){const buckets=new Map();
+  rows.forEach(r=>{const ms=tehMs(r.ts);if(isNaN(ms))return;const ws=weekStartMs(ms);if(!buckets.has(ws))buckets.set(ws,{});const o=buckets.get(ws);o[r.business]=(o[r.business]||0)+convTokens(r);});
+  const keys=[...buckets.keys()].sort((a,b)=>a-b);const labels=keys.map(fmtWk);
+  const ds=biz.map((b,i)=>({label:b,data:keys.map(k=>buckets.get(k)[b]||0),backgroundColor:COL[i%COL.length]}));
+  mk('wk-chart','bar',{labels,datasets:ds},{plugins:{legend:{position:'bottom',labels:{color:'#9ba8bc'}},tooltip:{callbacks:{title:items=>'Week of '+(items[0]?.label||''),label:c=>c.dataset.label+': '+tok(c.raw)}}},scales:{x:{stacked:true,ticks:{color:'#cfe3ff'}},y:{stacked:true,ticks:{color:'#9ba8bc',callback:tok}}}});}
+// hourly chart with drag-to-select range
+const hrSelPlugin={id:'hrsel',afterDraw(chart){const s=chart.$sel;if(!s||s.lo==null)return;const x=chart.scales.x,a=chart.chartArea,ctx=chart.ctx;const lo=Math.min(s.lo,s.hi),hi=Math.max(s.lo,s.hi);const bw=x.getPixelForValue(1)-x.getPixelForValue(0)||((a.right-a.left)/24);let xl=x.getPixelForValue(lo)-bw/2,xr=x.getPixelForValue(hi)+bw/2;xl=Math.max(a.left,xl);xr=Math.min(a.right,xr);ctx.save();ctx.fillStyle='rgba(45,212,191,0.16)';ctx.strokeStyle='rgba(45,212,191,0.75)';ctx.lineWidth=1;ctx.fillRect(xl,a.top,xr-xl,a.bottom-a.top);ctx.strokeRect(xl,a.top,xr-xl,a.bottom-a.top);ctx.restore();}};
+function idxFromEvt(chart,e){const rect=chart.canvas.getBoundingClientRect();const cx=(e.touches?e.touches[0].clientX:e.clientX)-rect.left;let v=chart.scales.x.getValueForPixel(cx);if(v==null||isNaN(v))return null;return Math.max(0,Math.min(23,Math.round(v)));}
+function wireHr(chart){if(chart.$wired)return;chart.$wired=true;const cv=chart.canvas;let down=false;
+  const start=e=>{const i=idxFromEvt(chart,e);if(i==null)return;down=true;chart.$sel={lo:i,hi:i};chart.draw();};
+  const move=e=>{if(!down)return;const i=idxFromEvt(chart,e);if(i==null)return;chart.$sel.hi=i;chart.draw();};
+  const end=()=>{if(!down)return;down=false;if(chart.$sel)showHrSum(Math.min(chart.$sel.lo,chart.$sel.hi),Math.max(chart.$sel.lo,chart.$sel.hi));};
+  cv.addEventListener('mousedown',start);cv.addEventListener('mousemove',move);window.addEventListener('mouseup',end);
+  cv.addEventListener('touchstart',e=>{start(e);},{passive:true});cv.addEventListener('touchmove',e=>{move(e);},{passive:true});cv.addEventListener('touchend',end);}
+function hourly(rows,biz){const labels=Array.from({length:24},(_,h)=>pad2(h));
+  const metric=HR_METRIC==='api'?(r=>r.real_cost_usd):convTokens;const fmt=HR_METRIC==='api'?(v=>'$'+(+v).toFixed(0)):tok;
+  const grid={};biz.forEach(b=>grid[b]=Array(24).fill(0));
+  rows.forEach(r=>{const h=hourOf(r);if(h<0||h>23)return;if(!grid[r.business])grid[r.business]=Array(24).fill(0);grid[r.business][h]+=metric(r);});
+  const ds=biz.map((b,i)=>({label:b,data:grid[b],backgroundColor:COL[i%COL.length]}));
+  if(charts['hr-chart'])charts['hr-chart'].destroy();
+  const c=$('hr-chart');c.setAttribute('role','img');c.setAttribute('aria-label','Hourly usage by business by Tehran hour of day');
+  charts['hr-chart']=new Chart(c,{type:'bar',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,animation:{duration:250},plugins:{legend:{position:'bottom',labels:{color:'#9ba8bc'}},tooltip:{callbacks:{title:items=>(items[0]?.label||'')+':00 Tehran',label:cx=>cx.dataset.label+': '+fmt(cx.raw)}}},scales:{x:{stacked:true,ticks:{color:'#cfe3ff'}},y:{stacked:true,beginAtZero:true,ticks:{color:'#9ba8bc',callback:fmt}}}},plugins:[hrSelPlugin]});
+  HR_LAST_ROWS=rows;charts['hr-chart'].$sel=HR_SEL;wireHr(charts['hr-chart']);charts['hr-chart'].draw();
+  if(HR_SEL)showHrSum(Math.min(HR_SEL.lo,HR_SEL.hi),Math.max(HR_SEL.lo,HR_SEL.hi));
+  else $('hr-sum').innerHTML='Drag across the chart to see totals for a selected hour range.';}
+function showHrSum(lo,hi){HR_SEL={lo,hi};const rows=(HR_LAST_ROWS||[]).filter(r=>{const h=hourOf(r);return h>=lo&&h<=hi;});
+  const byBiz={};let tokTot=0,apiTot=0;rows.forEach(r=>{const t=convTokens(r),a=r.real_cost_usd;(byBiz[r.business]??={tok:0,api:0});byBiz[r.business].tok+=t;byBiz[r.business].api+=a;tokTot+=t;apiTot+=a;});
+  const span=hi-lo+1,lab=pad2(lo)+':00–'+pad2(hi+1)+':00';
+  const parts=Object.entries(byBiz).sort((a,b)=>b[1].api-a[1].api).map(([b,o])=>`<b>${esc(b)}</b> ${tok(o.tok)} tok · ${usd(o.api)}`);
+  $('hr-sum').innerHTML=rows.length?`<b>Selected ${lab}</b> <span class="mut">(${span}h of day · ${rows.length} rows)</span> — Σ <b>${tok(tokTot)}</b> tokens · <b>${usd(apiTot)}</b> API$ &nbsp;|&nbsp; `+parts.join(' &nbsp;·&nbsp; '):`No data in ${lab}.`;}
+function clearHrSel(){HR_SEL=null;if(charts['hr-chart']){charts['hr-chart'].$sel=null;charts['hr-chart'].draw();}$('hr-sum').innerHTML='Drag across the chart to see totals for a selected hour range.';}
+function setHrMetric(m){HR_METRIC=m;document.querySelectorAll('#hr-metric button').forEach(b=>b.classList.toggle('sel',b.dataset.m===m));render();}
+function peakChart(rows,biz){const pk=biz.map(b=>rows.filter(r=>r.business===b&&r.peak).reduce((a,r)=>a+convTokens(r),0)),off=biz.map(b=>rows.filter(r=>r.business===b&&!r.peak).reduce((a,r)=>a+convTokens(r),0));mk('peak-chart','bar',{labels:biz,datasets:[{label:'Peak (5–11am PT)',data:pk,backgroundColor:'#f87171'},{label:'Off-peak',data:off,backgroundColor:'#34d399'}]},{plugins:{legend:{position:'bottom',labels:{color:'#9ba8bc'}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+tok(c.raw)}}},scales:{x:{stacked:true,ticks:{color:'#cfe3ff'}},y:{stacked:true,ticks:{color:'#9ba8bc',callback:tok}}}});}
+function trend(rows,biz){const days=[...new Set(rows.map(r=>r.day||r.week))].sort();const ds=biz.map((b,i)=>({label:b,data:days.map(d=>rows.filter(r=>r.business===b&&(r.day||r.week)===d).reduce((a,r)=>a+r.real_cost_usd,0)),borderColor:COL[i%COL.length],backgroundColor:COL[i%COL.length],tension:.3}));mk('trend-chart','line',{labels:days,datasets:ds},{plugins:{legend:{position:'bottom',labels:{color:'#9ba8bc'}}},scales:{x:{ticks:{color:'#9ba8bc',maxTicksLimit:8}},y:{ticks:{color:'#9ba8bc',callback:v=>'$'+v}}}});}
+function dough(id,l,d){mk(id,'doughnut',{labels:l,datasets:[{data:d,backgroundColor:COL}]},{plugins:{legend:{position:'right',labels:{color:'#9ba8bc',font:{size:11}}},tooltip:{callbacks:{label:c=>c.label+': '+tok(c.raw)}}}});}
+function bar(id,l,d){mk(id,'bar',{labels:l,datasets:[{data:d,backgroundColor:COL}]},{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>tok(c.raw)}}},scales:{y:{beginAtZero:true,ticks:{color:'#9ba8bc',callback:tok}},x:{ticks:{color:'#9ba8bc'}}}});}
+const CHART_ARIA={h1:'Billing month cost share stacked by reset week','h1-chart':'Billing month cost share by business and week','h2-chart':'Billing month token usage by business and week','wk-chart':'Weekly token usage per business across reset weeks','hr-chart':'Hourly usage by business','model-chart':'Token distribution by model','token-chart':'Token distribution by type','trend-chart':'Daily API cost trend per business','h3-chart':'API equivalent dollar value by business','peak-chart':'Peak versus off-peak token usage by business'};
+function mk(id,t,data,o){if(charts[id])charts[id].destroy();const c=$(id);c.setAttribute('role','img');c.setAttribute('aria-label',CHART_ARIA[id]||id);charts[id]=new Chart(c,{type:t,data,options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},...o}});}
+function fill(id,arr,cols){const tb=document.querySelector('#'+id+' tbody');const max=arr.length?Math.max(...arr.map(o=>o.basis||o.dollar||0)):0;tb.innerHTML=arr.length?arr.map(o=>{const hi=(o.basis||o.dollar)===max&&max>0;return '<tr class="'+(hi?'top-row':'')+'">'+cols(o).map(c=>'<td>'+esc(c)+'</td>').join('')+'</tr>';}).join(''):'<tr><td colspan="6" class="mut">No data for this selection</td></tr>';}
+function draw5h(){$('b5').textContent=tok(BLOCK.cur);$('b5s').textContent=BLOCK.remain+' min to reset';$('pk').textContent=tok(BLOCK.peak);const p=100*BLOCK.cur/(BLOCK.peak||1);$('pkp').textContent=p.toFixed(0)+'%';$('b5bar').style.width=Math.min(100,p)+'%';$('pkbar').style.width='100%';}
+let built=false,filterSig='';function buildFilters(){if(!DATA.length)return;const sig=DIMS.map(d=>[...new Set(DATA.map(r=>String(d.v(r))))].sort().join('|')).join('||');if(built&&sig===filterSig)return;built=true;filterSig=sig;
+  $('filters').innerHTML=DIMS.map(d=>`<div class="ms"><button onclick="tp('${d.k}',event)">${d.l}: <b id="lb-${d.k}">All</b> ▾</button><div class="panel" id="pn-${d.k}"></div></div>`).join('');
+  DIMS.forEach(d=>{const o=[...new Map(DATA.map(r=>[String(d.v(r)),d.lab(r)])).entries()];const pn=$('pn-'+d.k);pn.innerHTML=o.map(([v,l])=>`<label><input type="checkbox" value="${esc(v)}"> ${esc(l)}</label>`).join('');pn.querySelectorAll('input').forEach(i=>{i.checked=sel[d.k].has(i.value);i.addEventListener('change',()=>ck(d.k,i.value,i.checked));});$('lb-'+d.k).textContent=sel[d.k].size?sel[d.k].size+' sel':'All';});
+  if(!buildFilters._wired){buildFilters._wired=true;document.addEventListener('click',()=>document.querySelectorAll('.panel').forEach(p=>p.classList.remove('open')));}}
+function tp(k,e){e.stopPropagation();const p=$('pn-'+k),o=p.classList.contains('open');document.querySelectorAll('.panel').forEach(x=>x.classList.remove('open'));if(!o)p.classList.add('open');}
+function ck(k,v,c){c?sel[k].add(v):sel[k].delete(v);$('lb-'+k).textContent=sel[k].size?sel[k].size+' sel':'All';render();}
+function resetFilters(){DIMS.forEach(d=>{sel[d.k].clear();const e=$('lb-'+d.k);if(e)e.textContent='All';});document.querySelectorAll('.panel input').forEach(i=>i.checked=false);render();}
+function updateCount(){const any=DIMS.some(d=>sel[d.k].size)||period==='range';$('fcount').textContent=any?'Showing '+filtered().length+' of '+DATA.length+' rows':'Showing all';}
+function syncLbl(m){if(m==null)return'—';const c=m<10?'ok':m<60?'warn':'bad';const t=m<60?m+'m ago':m<1440?Math.round(m/60)+'h ago':Math.round(m/1440)+'d ago';return `<span class="dot ${c}"></span>${t}`;}
+function laptopSync(){$('laptop-sync').innerHTML=Object.keys(LAPTOP_SYNC).map(l=>{const m=LAPTOP_SYNC[l];const stale=m!=null&&m>1440;return `<span class="pill${stale?' stale':''}" title="Last export sync">${syncLbl(m)} <b>${esc(l)}</b></span>`;}).join('');}
+function setMode(m){mode=m;$('m-live').classList.toggle('sel',m==='live');$('m-man').classList.toggle('sel',m==='manual');$('modelbl').textContent=m;if(timer){clearInterval(timer);timer=null;}if(m==='live')timer=setInterval(()=>{if(document.visibilityState==='visible')loadFact();},60000);}
+function setPeriod(p){period=p;rangeStart=rangeEnd=null;$('cal-lbl').textContent='Date range';document.querySelectorAll('.tabs button[data-p]').forEach(b=>b.classList.toggle('active',b.dataset.p===p));render();}
+function setExcl(w){EXCL=w;document.querySelectorAll('#excl-toggle button').forEach(b=>b.classList.toggle('sel',+b.dataset.x===w));render();}
+function updateWindows(){const wk='resets '+DOW[WK_DOW%7]+' '+pad2(WK_H)+':'+pad2(WK_MIN)+' (Tehran)';
+  $('windows').textContent=period==='range'?('Custom range · '+(rangeStart||'')+(rangeEnd&&rangeEnd!==rangeStart?' → '+rangeEnd:'')):period==='week'?('This week · '+wk):period==='all'?'All time':('Billing month · resets the '+MONTH_RESET_DAY+'th (Tehran)');}
+// ---- calendar range picker ----
+function calToggle(e){e.stopPropagation();const p=$('cal-pop');const open=p.classList.contains('open');document.querySelectorAll('.panel').forEach(x=>x.classList.remove('open'));if(!open){if(calY==null){const t=tehToday();calY=t.y;calM=t.m;}calRender();p.classList.add('open');}}
+function calNav(d){calM+=d;if(calM<0){calM=11;calY--;}if(calM>11){calM=0;calY++;}calRender();}
+function calPick(s){if(!rangeStart||(rangeStart&&rangeEnd)){rangeStart=s;rangeEnd=null;}else{if(s<rangeStart){rangeEnd=rangeStart;rangeStart=s;}else rangeEnd=s;}calRender();if(rangeStart&&rangeEnd)calApply();}
+function calApply(e){if(e)e.stopPropagation();if(!rangeStart)return;rangeEnd=rangeEnd||rangeStart;period='range';document.querySelectorAll('.tabs button[data-p]').forEach(b=>b.classList.remove('active'));$('cal-lbl').textContent=rangeStart+(rangeEnd!==rangeStart?' → '+rangeEnd:'');render();}
+function calClear(e){if(e)e.stopPropagation();rangeStart=rangeEnd=null;$('cal-lbl').textContent='Date range';if(period==='range')setPeriod('month');else calRender();}
+function calRender(){const p=$('cal-pop');const t=tehToday(),todayStr=dstr(t.y,t.m,t.day);
+  const first=new Date(Date.UTC(calY,calM,1)).getUTCDay(),lead=(first+6)%7,dim=new Date(Date.UTC(calY,calM+1,0)).getUTCDate();
+  const lo=rangeStart,hi=rangeEnd||rangeStart;let cells='';
+  for(let i=0;i<lead;i++)cells+='<div class="cd empty"></div>';
+  for(let day=1;day<=dim;day++){const s=dstr(calY,calM,day),dow=new Date(Date.UTC(calY,calM,day)).getUTCDay();
+    const isMon=dow===(WK_DOW%7),isRenew=day===MONTH_RESET_DAY,inR=lo&&s>=lo&&s<=hi,isEnd=s===rangeStart||s===rangeEnd;
+    let cls='cd';if(isMon)cls+=' mon';if(isRenew)cls+=' renew';if(inR)cls+=' inr';if(isEnd)cls+=' end';if(s===todayStr)cls+=' today';
+    const tip=isRenew?'Billing renewal (the '+MONTH_RESET_DAY+'th)':isMon?('Weekly reset '+DOW[WK_DOW%7]+' '+pad2(WK_H)+':'+pad2(WK_MIN)):'';
+    cells+=`<div class="${cls}" title="${tip}" onclick="calPick('${s}')">${day}${isRenew?'<i class="rr"></i>':isMon?'<i class="mm"></i>':''}</div>`;}
+  p.innerHTML=`<div class="row between"><button onclick="calNav(-1)">◀</button><b>${MONTHS[calM]} ${calY}</b><button onclick="calNav(1)">▶</button></div>
+    <div class="calgrid dow"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+    <div class="calgrid">${cells}</div>
+    <div class="calleg xs mut"><span class="lg renew"></span>renewal (the ${MONTH_RESET_DAY}th, bold)<span class="lg mon"></span>weekly reset (${DOW[WK_DOW%7]})</div>
+    <div class="row between" style="margin-top:8px"><span class="sm">${lo?esc(lo)+(rangeEnd&&rangeEnd!==lo?' → '+esc(rangeEnd):''):'pick start &amp; end day'}</span><span class="row"><button class="pri" onclick="calApply(event)">Apply</button><button onclick="calClear(event)">Clear</button></span></div>`;}
+setMode('live');loadFact();
+</script>
+</body></html>
